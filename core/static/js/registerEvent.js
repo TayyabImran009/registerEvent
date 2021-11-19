@@ -474,7 +474,6 @@ function formatDate(d_ate) {
     var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
     var yyyy = today.getFullYear();
     today = dd + "/" + mm + "/" + yyyy;
-    console.log(today);
     return today;
   } else if (d_ate.toLowerCase() == "next wednesday") {
     var today = new Date();
@@ -483,7 +482,6 @@ function formatDate(d_ate) {
     var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
     var yyyy = today.getFullYear();
     today = dd + "/" + mm + "/" + yyyy;
-    console.log(today);
     return today;
   } else if (d_ate.toLowerCase() == "next thursday") {
     var today = new Date();
@@ -492,7 +490,6 @@ function formatDate(d_ate) {
     var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
     var yyyy = today.getFullYear();
     today = dd + "/" + mm + "/" + yyyy;
-    console.log(today);
     return today;
   } else if (d_ate.toLowerCase() == "next friday") {
     var today = new Date();
@@ -501,7 +498,6 @@ function formatDate(d_ate) {
     var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
     var yyyy = today.getFullYear();
     today = dd + "/" + mm + "/" + yyyy;
-    console.log(today);
     return today;
   } else if (d_ate.toLowerCase() == "next saturday") {
     var today = new Date();
@@ -510,7 +506,6 @@ function formatDate(d_ate) {
     var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
     var yyyy = today.getFullYear();
     today = dd + "/" + mm + "/" + yyyy;
-    console.log(today);
     return today;
   } else if (d_ate.toLowerCase() == "next sunday") {
     var today = new Date();
@@ -519,7 +514,6 @@ function formatDate(d_ate) {
     var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
     var yyyy = today.getFullYear();
     today = dd + "/" + mm + "/" + yyyy;
-    console.log(today);
     return today;
   } else if (d_ate.indexOf("/") > -1 && d_ate.split("/").length == 3) {
     newdate = "";
@@ -537,7 +531,6 @@ function formatDate(d_ate) {
       }
     }
     newdate = newdate + "/" + splitDate[yearindex];
-    console.log(newdate);
     return newdate;
   } else if (d_ate.indexOf("-") > -1 && d_ate.split("-").length == 3) {
     newdate = "";
@@ -555,7 +548,6 @@ function formatDate(d_ate) {
       }
     }
     newdate = newdate + "/" + splitDate[yearindex];
-    console.log(newdate);
     return newdate;
   } else if (d_ate.indexOf("/") > -1 && d_ate.split("/").length == 2) {
     newdate = "";
@@ -573,7 +565,6 @@ function formatDate(d_ate) {
     var today = new Date();
     var yyyy = today.getFullYear();
     newdate = newdate + "/" + yyyy;
-    console.log(newdate);
     return newdate;
   } else if (d_ate.indexOf("-") > -1 && d_ate.split("-").length == 2) {
     newdate = "";
@@ -591,7 +582,6 @@ function formatDate(d_ate) {
     var today = new Date();
     var yyyy = today.getFullYear();
     newdate = newdate + "/" + yyyy;
-    console.log(newdate);
     return newdate;
   } else if (
     d_ate.indexOf("jan") ||
@@ -623,7 +613,6 @@ function formatDate(d_ate) {
           getMonthNumber(dateNoSpace[1]) +
           "/" +
           dateNoSpace[2];
-        console.log(finalDate);
         return finalDate;
       } else {
         finalDate =
@@ -632,7 +621,6 @@ function formatDate(d_ate) {
           getMonthNumber(dateNoSpace[0]) +
           "/" +
           dateNoSpace[2];
-        console.log(finalDate);
         return finalDate;
       }
     } else {
@@ -646,19 +634,7 @@ function formatDate(d_ate) {
           monthName = monthName + dateWithNoSpace[i];
         }
       }
-      console.log(numbers);
-      console.log(monthName);
       if (numbers.length == 5) {
-        console.log(
-          numbers[0] +
-            "/" +
-            getMonthNumber(monthName) +
-            "/" +
-            numbers[1] +
-            numbers[2] +
-            numbers[3] +
-            numbers[4]
-        );
         return (
           numbers[0] +
           "/" +
@@ -670,17 +646,6 @@ function formatDate(d_ate) {
           numbers[4]
         );
       } else {
-        console.log(
-          numbers[0] +
-            numbers[1] +
-            "/" +
-            getMonthNumber(monthName) +
-            "/" +
-            numbers[2] +
-            numbers[3] +
-            numbers[4] +
-            numbers[5]
-        );
         return (
           numbers[0] +
           numbers[1] +
@@ -695,7 +660,6 @@ function formatDate(d_ate) {
       }
     }
   } else {
-    console.log("Blank");
     return "none";
   }
 
