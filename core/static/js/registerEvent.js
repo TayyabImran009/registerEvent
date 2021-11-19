@@ -242,15 +242,18 @@ function formatTime(time) {
     }
     if (time.indexOf(":") > -1) {
       if (time.length == 4) {
+        console.log(time + "am");
         return time + "am";
       } else {
         timeHold = time[0] + time[1];
         if (parseInt(timeHold) < 13) {
+          console.log(time + "am");
           return time + "am";
         } else {
           timeH = parseInt(timeHold) - 12;
           timeM = time[3] + time[4];
           formatedTime = timeH + ":" + timeM + "pm";
+          console.log(formatedTime);
           return formatedTime;
         }
       }
@@ -259,12 +262,14 @@ function formatTime(time) {
         timeH = time[0];
         timeM = time[1] + time[2];
         formatedTime = timeH + ":" + timeM + "am";
+        console.log(formatedTime);
         return formatedTime;
       } else {
         if (time[0] == "0") {
           timeH = time[1];
           timeM = time[2] + time[3];
           formatedTime = timeH + ":" + timeM + "am";
+          console.log(formatedTime);
           return formatedTime;
         } else {
           timeHold = time[0] + time[1];
@@ -272,11 +277,13 @@ function formatTime(time) {
             timeH = time[0] + time[1];
             timeM = time[2] + time[3];
             formatedTime = timeH + ":" + timeM + "am";
+            console.log(formatedTime);
             return formatedTime;
           } else {
             timeH = parseInt(timeHold) - 12;
             timeM = time[2] + time[3];
             formatedTime = timeH + ":" + timeM + "pm";
+            console.log(formatedTime);
             return formatedTime;
           }
         }
@@ -297,6 +304,11 @@ function formatTime(time) {
           return time + ":" + "00" + "am";
         } else if (time.length == 2) {
           return time + ":" + "00" + "am";
+        } else if (
+          (time.indexOf("am") > -1 || time.indexOf("pm") > -1) &&
+          time.length == 4
+        ) {
+          return timeHold + ":" + "00" + time[2] + time[3];
         } else if (time.indexOf("am") > -1 || time.indexOf("pm") > -1) {
           return timeHold + ":" + time[2] + time[3] + time[4] + time[5];
         } else {
@@ -645,7 +657,7 @@ function formatDate(d_ate) {
           numbers[3] +
           numbers[4]
         );
-      } else {
+      } else if (numbers.length > 8) {
         return (
           numbers[0] +
           numbers[1] +
@@ -656,6 +668,12 @@ function formatDate(d_ate) {
           numbers[3] +
           numbers[4] +
           numbers[5]
+        );
+      } else {
+        var today = new Date();
+        var yyyy = today.getFullYear();
+        return (
+          numbers[0] + numbers[1] + "/" + getMonthNumber(monthName) + "/" + yyyy
         );
       }
     }
