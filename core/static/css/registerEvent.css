@@ -1,0 +1,222 @@
+.createEventBlock {
+  padding: 25px;
+  margin: 100px;
+  margin-top: 20px;
+  border: 1px solid;
+  border-radius: 30px;
+  position: relative;
+}
+
+.popupMessages {
+  background-color: rgba(44, 43, 43, 0.048);
+  z-index: 1 !important;
+  padding: 25px;
+  text-align: center;
+  border-top-left-radius: 25px;
+  border-top-right-radius: 25px;
+  display: none;
+}
+
+.createEventInerBlock {
+  margin: 20px;
+}
+
+.addContentInputDiv {
+  margin-bottom: 20px;
+}
+
+.addContentInerInputDiv {
+  margin: auto;
+  border: solid 1px black;
+  padding: 10px;
+}
+
+.addContentInerInputDiv input {
+  width: 85%;
+  border: none;
+  font-size: 15px;
+  background-color: #f4f7fa;
+}
+
+.addContentInerInputDiv input:focus {
+  outline: none;
+}
+
+.addContentInerInputDiv button {
+  width: 113.76px;
+  height: 25px;
+  background: #e6e6e6;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 10px;
+}
+
+.createEventContent {
+  padding-left: 250px;
+  padding-right: 250px;
+  position: relative;
+}
+
+.createEventContentField {
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.createEventContentTitel {
+  width: 20%;
+  float: left;
+  text-align: center;
+}
+
+.createEventContentTitel p {
+  margin: 0px;
+  margin-top: 10px;
+  font-size: 15px;
+}
+
+.createEventContentData {
+  width: 70%;
+  float: left;
+  margin-left: 50px;
+  background: linear-gradient(70.29deg, #09a6ff -97.65%, #9262e1 73.62%);
+  border-radius: 25px;
+  text-align: center;
+  color: white;
+  position: relative;
+  display: none;
+}
+
+.createEventContentDataEmailArea {
+  margin-left: 50px;
+}
+
+.createEventContentDataEmail {
+  float: left;
+  padding: 10px;
+  padding-right: 35px;
+  margin-right: 10px;
+  margin-top: 10px;
+  background: linear-gradient(70.29deg, #09a6ff -97.65%, #9262e1 73.62%);
+  border-radius: 25px;
+  text-align: center;
+  color: white;
+  position: relative;
+  display: none;
+}
+
+.createEventContentDataEmail p {
+  margin: 0px;
+}
+
+.createEventContentDataEmail i {
+  position: absolute;
+  right: 14px;
+  top: 13px;
+}
+
+.createEventContentDataEmail2 {
+  float: left;
+  padding: 10px;
+  padding-right: 35px;
+  margin-right: 10px;
+  margin-top: 10px;
+  background: linear-gradient(70.29deg, #09a6ff -97.65%, #9262e1 73.62%);
+  border-radius: 25px;
+  text-align: center;
+  color: white;
+  position: relative;
+  display: block;
+}
+
+.createEventContentDataEmail2 p {
+  margin: 0px;
+}
+
+.createEventContentDataEmail2 i {
+  position: absolute;
+  right: 14px;
+  top: 13px;
+}
+
+.createEventContentData p {
+  margin: 0px;
+  margin-top: 5px;
+  font-size: 15px;
+  margin-left: 20px;
+  margin-bottom: 5px;
+}
+
+.createEventContentData i {
+  position: absolute;
+  right: 14px;
+  top: 9px;
+}
+
+.autofillHeading {
+  margin-top: 20px;
+}
+
+.autofillHeading h2 {
+  margin-left: 20px;
+}
+
+.autoFillDiv {
+  padding: 10px;
+  margin: auto;
+  border: solid 1px black;
+  margin-left: 20px;
+}
+
+.autoFillDiv input {
+  width: 90%;
+  border: none;
+  font-size: 15px;
+  background-color: #f4f7fa;
+}
+
+.autoFillDiv input:focus {
+  outline: none;
+}
+
+.finalBtns {
+  margin-top: 25px;
+  position: relative;
+  height: 37px;
+}
+
+.closeBtn {
+  background: linear-gradient(92.68deg, #65676d 0%, #010026 100%);
+  box-shadow: 6px 6px 25px rgba(109, 109, 109, 0.15);
+  border-radius: 8px;
+  color: white;
+  height: 36px;
+  width: 130px;
+  position: absolute;
+  right: 157px;
+}
+
+.submitBtn {
+  background: linear-gradient(
+    180deg,
+    #ff9a24 0%,
+    rgba(247, 199, 144, 0.89) 100%
+  );
+  box-shadow: 6px 6px 25px rgba(109, 109, 109, 0.15);
+  border-radius: 8px;
+  color: white;
+  height: 36px;
+  width: 130px;
+  right: 10px;
+  position: absolute;
+  right: 10px;
+}
+/**************************************** Hide div *********************************************/
+
+/* #eventDate,
+#eventStartTime,
+#eventLength,
+#eventParticipants,
+#eventLocation,
+#eventCalendar,
+#eventDescription {
+  display: none;
+} */

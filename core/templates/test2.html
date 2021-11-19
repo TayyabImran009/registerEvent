@@ -1,0 +1,155 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} LYSA - Your Personal AI Dashboard {% endblock %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}
+
+    <link rel='stylesheet' type='text/css' media='screen' href="/static/css/registerEvent.css">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+
+
+{% endblock stylesheets %}
+
+{% block content %}
+
+<div class="createEventBlock">
+    <div class="popupMessages" id="popupMessage">
+        <h1>Congratulations</h1>
+        <p>Your event is saved</p>
+    </div>
+    <h1>Create new event</h1>
+    <div class="createEventInerBlock">
+
+        <div class="addContentInputDiv">
+            <div class="addContentInerInputDiv">
+                <input id="eventAddBar" type="text" placeholder="Type event title">
+                <button id="eventAddBtn">Add</button>
+            </div>
+        </div>
+
+        <div class="createEventContent">
+            <div class="createEventContentField">
+                <div class="createEventContentTitel">
+                    <p>Event title:</p>
+                </div>
+                <div class="createEventContentData" id="createEventContentData">
+                    <p id="fieldsData">My first event</p>
+                    <i class="fa fa-times" aria-hidden="true" id="removeField"></i>
+                    <input class="titleField" type="hidden" value="none" id="fields">
+                </div>
+            </div>
+
+            <div class="createEventContentField">
+                <div class="createEventContentTitel">
+                    <p>Date:</p>
+                </div>
+                <div class="createEventContentData" id="createEventContentData">
+                    <p id="fieldsData">16 Nov</p>
+                    <i class="fa fa-times" aria-hidden="true" id="removeField"></i>
+                    <input class="dateField" type="hidden" value="none" id="fields">
+                </div>
+            </div>
+
+            <div class="createEventContentField">
+                <div class="createEventContentTitel">
+                    <p>Start time:</p>
+                </div>
+                <div class="createEventContentData" id="createEventContentData">
+                    <p id="fieldsData">12:00</p>
+                    <i class="fa fa-times" aria-hidden="true" id="removeField"></i>
+                    <input class="startTimeField" type="hidden" value="none" id="fields">
+                </div>
+            </div>
+
+            <div class="createEventContentField">
+                <div class="createEventContentTitel">
+                    <p>Length:</p>
+                </div>
+                <div class="createEventContentData" id="createEventContentData">
+                    <p id="fieldsData">2 hours</p>
+                    <i class="fa fa-times" aria-hidden="true" id="removeField"></i>
+                    <input class="lengthField" type="hidden" value="none" id="fields">
+                </div>
+            </div>
+
+            <div class="createEventContentField">
+                <div class="createEventContentTitel">
+                    <p>Paticipate:</p>
+                </div>
+                <div class="createEventContentDataEmailArea">
+                    <div class="createEventContentDataEmail" id="createEventContentData">
+                        <p id="fieldsData">abc@gmail.com</p>
+                        <i class="fa fa-times" aria-hidden="true"></i>
+                    </div>
+                </div>
+                <input class="emailField" type="hidden" value="none" id="fields">
+            </div>
+
+            <div class="createEventContentField">
+                <div class="createEventContentTitel">
+                    <p>Location:</p>
+                </div>
+                <div class="createEventContentData" id="createEventContentData">
+                    <p id="fieldsData">Lahore</p>
+                    <i class="fa fa-times" aria-hidden="true" id="removeField"></i>
+                    <input class="locationField" type="hidden" value="none" id="fields">
+                </div>
+            </div>
+
+            <div class="createEventContentField">
+                <div class="createEventContentTitel">
+                    <p>Calender to add:</p>
+                </div>
+                <div class="createEventContentData" id="createEventContentData">
+                    <p id="fieldsData">My first calender</p>
+                    <i class="fa fa-times" aria-hidden="true" id="removeField"></i>
+                    <input class="calenderField" type="hidden" value="none" id="fields">
+                </div>
+            </div>
+
+            <div class="createEventContentField">
+                <div class="createEventContentTitel">
+                    <p>Description:</p>
+                </div>
+                <div class="createEventContentData" id="createEventContentData">
+                    <p id="fieldsData">Developers Talk</p>
+                    <i class="fa fa-times" aria-hidden="true" id="removeField"></i>
+                    <input class="descriptionField" type="hidden" value="none" id="fields">
+                </div>
+            </div>
+        </div>
+
+        
+        
+        <div  class="autofillHeading">
+            <h2>Auto-fill information from recent events</h2>
+            <div class="autoFillDiv">
+                <input type="text" placeholder="Search Here">
+                <i class="fa fa-caret-down" aria-hidden="true"></i>
+            </div>
+        </div>
+
+        <div class="finalBtns">
+            <button class="closeBtn">Close</button>
+            <button class="submitBtn" id="submitData">Add</button>
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock content %}
+
+{% block javascripts %}
+
+    <script src="/static/js/jquery.js" ></script>
+    <script src="/static/js/popper.js" ></script>
+    <script src="/static/js/bootstrap.js" ></script>
+    <script src="/static/js/registerEvent.js"></script>
+
+{% endblock javascripts %}
+
+
+
+

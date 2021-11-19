@@ -1,0 +1,161 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} LYSA - Your Personal AI Dashboard {% endblock %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}
+
+    <!-- material datetimepicker css -->
+    <link rel="stylesheet" href="/static/assets/plugins/material-datetimepicker/css/bootstrap-material-datetimepicker.css">
+    <!-- Bootstrap datetimepicker css -->
+    <link rel="stylesheet" href="/static/assets/plugins/bootstrap-datetimepicker/css/bootstrap-datepicker3.min.css">
+    <link rel="stylesheet" href="/static/assets/fonts/material/css/materialdesignicons.min.css">
+    <!-- minicolors css -->
+    <link rel="stylesheet" href="/static/assets/plugins/mini-color/css/jquery.minicolors.css">
+
+    <!-- bootstrap-tagsinput-latest css -->
+    <link rel="stylesheet" href="/static/assets/plugins/bootstrap-tagsinput-latest/css/bootstrap-tagsinput.css">
+
+    <!-- notification css -->
+    <link rel="stylesheet" href="/static/assets/plugins/notification/css/notification.min.css">
+
+
+{% endblock stylesheets %}
+
+{% block content %}
+
+<div class="pcoded-main-container">
+        <div class="pcoded-wrapper">
+            <div class="pcoded-content">
+                <div class="pcoded-inner-content">
+                    <div class="main-body">
+                        <div class="page-wrapper">
+                            <!-- [ Main Content ] start -->
+                            <div class="row">
+                                <div class="col-xl-12">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h5><b>Add a calendar event</b></h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-xl-12">
+                                                    <form class="form-row align-items-center" action = "" method="post" id="tags">
+                                                        {% csrf_token %}
+                                                            <div class="col-xl-10" id="event-name-text">
+                                                                {{ form.event_name }}
+                                                            </div>
+                                                            <div class="col-auto">
+                                                                <button type="submit" class="btn btn-primary mb-2" id="event-name-btn">Add</button>
+                                                            </div>
+                                                            <div class="col-xl-10" id="event-attendee-text">
+                                                                {{ form.attendees }}
+                                                            </div>
+                                                            <div class="col-auto">
+                                                                <button type="submit" class="btn btn-primary" id="event-attendee-btn">Add</button>
+                                                            </div>
+                                                            <div class="col-xl-10" id="start-date-text">
+                                                                {{ form.start_date }}
+                                                            </div>
+                                                            <div class="col-auto">
+                                                                <button type="submit" class="btn btn-primary mb-2" id="start-date-btn">Add</button>
+                                                            </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                            <hr>
+                                            <div class="row">
+                                                <div class="col-xl-10">
+                                                    <form>
+                                                        <div class="form-group row align-items-center">
+                                                            <label for="event-name-3" class="col-sm-3 col-form-label">Event name</label>
+                                                            <div class="col-sm-9">
+                                                                {{ form_side.event_name }}
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group row align-items-center">
+                                                            <label for="event-name-3" class="col-sm-3 col-form-label">Attendees</label>
+                                                            <div class="col-sm-9">
+                                                                {{ form_side.attendees }}
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group row align-items-center">
+                                                            <label for="event-name-3" class="col-sm-3 col-form-label">Start date</label>
+                                                            <div class="col-sm-9">
+                                                                {{ form_side.start_date }}
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}
+
+{% block javascripts %}
+
+    <!-- bootstrap-tagsinput-latest Js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.bundle.min.js"></script>
+    <script src="/static/assets/plugins/bootstrap-tagsinput-latest/js/bootstrap-tagsinput.min.js"></script>
+
+    <!-- material datetimepicker Js -->
+    <script src="http://momentjs.com/downloads/moment-with-locales.min.js"></script>
+    <script src="/static/assets/plugins/material-datetimepicker/js/bootstrap-material-datetimepicker.js"></script>
+
+    <!-- minicolors Js -->
+    <script src="/static/assets/plugins/mini-color/js/jquery.minicolors.min.js"></script>
+
+    <!-- form-picker-custom Js -->
+    <script src="/static/assets/js/pages/form-picker-custom.js"></script>
+
+    <!-- notification Js -->
+    <script src="/static/assets/plugins/notification/js/bootstrap-growl.min.js"></script>
+
+    <script type="text/javascript">
+
+        $(document).ready(function() {
+           $('#event-attendee-text').hide();
+           $('#start-date-text').hide();
+           $('#event-attendee-btn').hide();
+           $('#start-date-btn').hide();
+        });
+
+        $("#event-name-btn").click(function(event) {
+            event.preventDefault();
+            $("#event-name-text").hide();
+            $("#event-name-btn").hide();
+            $("#event-attendee-text").show();
+            $("#event-attendee-btn").show();
+            $("#event-name-3").tagsinput('add', $("#event-name-2").val());
+        });
+
+        $("#event-attendee-btn").click(function(event) {
+            event.preventDefault();
+            $("#event-attendee-text").hide();
+            $("#event-attendee-btn").hide();
+            $("#start-date-text").show();
+            $("#start-date-btn").show();
+            $("#attendees-3").tagsinput('add',$("#attendees-2").val());
+        });
+
+        $("#start-date-btn").click(function(event) {
+            event.preventDefault();
+            $("#start-date-3").tagsinput('add',$("#start-date-2").val());
+        });
+
+    </script>
+
+{% endblock javascripts %}
+
+
+
+
