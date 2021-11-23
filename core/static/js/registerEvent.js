@@ -8,6 +8,18 @@ const createEventContentData = document.querySelectorAll(
 );
 
 eventAddBtn.addEventListener("click", function () {
+  performTask();
+  eventAddBar.focus();
+});
+
+eventAddBar.addEventListener("keydown", function (event) {
+  if (event.keyCode === 13) {
+    performTask();
+    eventAddBar.focus();
+  }
+});
+
+function performTask() {
   if (
     eventAddBar.value != "" &&
     eventAddBar.value.replace(/\s/g, "").length &&
@@ -38,7 +50,10 @@ eventAddBtn.addEventListener("click", function () {
           fieldsData[index].innerText = fields[index].value;
         }
       } else if (index == 1) {
-        fields[index].value = formatDate(eventAddBar.value);
+        returnDate = formatDate(eventAddBar.value);
+        console.log("call: " + returnDate);
+        fDate = setDate(returnDate);
+        fields[index].value = fDate;
         createEventContentData[index].style.display = "block";
         fieldsData[index].innerText = fields[index].value;
       } else if (index == 2) {
@@ -47,10 +62,13 @@ eventAddBtn.addEventListener("click", function () {
           createEventContentData[index].style.display = "block";
           fieldsData[index].innerText = fields[index].value;
 
-          fields[index + 1].value = timeandlength(eventAddBar.value) + "min";
+          fields[index + 1].value = putTimeInHM(
+            timeandlength(eventAddBar.value)
+          );
           createEventContentData[index + 1].style.display = "block";
-          fieldsData[index + 1].innerText =
-            timeandlength(eventAddBar.value) + "min";
+          fieldsData[index + 1].innerText = putTimeInHM(
+            timeandlength(eventAddBar.value)
+          );
         } else {
           fields[index].value = formatTime(eventAddBar.value);
           createEventContentData[index].style.display = "block";
@@ -66,7 +84,7 @@ eventAddBtn.addEventListener("click", function () {
     index = getFieldNumber();
     eventAddBar.placeholder = getNextValue(index);
   }
-});
+}
 
 function getFieldNumber() {
   for (let i = 0; i < fields.length; i++) {
@@ -116,6 +134,7 @@ for (let i = 0; i < removeField.length; i++) {
     removeField[i].closest("#createEventContentData").style.display = "none";
     removeField[i].nextElementSibling.value = "none";
     eventAddBar.placeholder = getRemovedValue(i);
+    eventAddBar.focus();
   });
 }
 
@@ -213,17 +232,51 @@ function saveEvent(mydata) {
 }
 
 // *************************************** formating Length
-
 function formatLength(length) {
   nospace = length.replace(/ +/g, "");
-  onlyNum = nospace.match(/\d+/)[0];
+  index = 0;
+  onlyNum = "";
+  console.log(nospace[index]);
+  for (let i = 0; nospace[i] != "h" && nospace[i] != "m"; i++) {
+    onlyNum += nospace[i];
+    console.log(onlyNum);
+  }
+  console.log(onlyNum);
   if (nospace.indexOf("m") > -1 || nospace.indexOf("M") > -1) {
-    return onlyNum;
+    console.log(onlyNum);
+    putTimeInHM(onlyNum);
+    return putTimeInHM(onlyNum);
   }
   if (nospace.indexOf("h") > -1 || nospace.indexOf("H") > -1) {
-    return parseFloat(onlyNum) * 60;
+    console.log(parseFloat(onlyNum) * 60);
+    putTimeInHM(parseFloat(onlyNum) * 60);
+    return putTimeInHM(parseFloat(onlyNum) * 60);
   } else {
+    console.log("none");
     return "none";
+  }
+}
+
+function putTimeInHM(time) {
+  if (parseFloat(time) >= 60) {
+    h2 = 0;
+    min2 = 0;
+    t2 = parseFloat(time);
+    while (t2 >= 60) {
+      h2 = h2 + 1;
+      t2 = t2 - 60;
+    }
+    min2 = t2;
+    if (min2 == 0) {
+      console.log(h2 + " hour");
+      return h2 + " hour";
+    } else {
+      console.log(h2 + " hour " + min2 + " min");
+      return h2 + " hour " + min2 + " min";
+    }
+  } else {
+    console.log(time + " min");
+    return time + " min";
   }
 }
 
@@ -243,6 +296,7 @@ function formatTime(time) {
     if (time.indexOf(":") > -1) {
       if (time.length == 4) {
         console.log(time + "am");
+        console.log("here");
         return time + "am";
       } else {
         timeHold = time[0] + time[1];
@@ -294,35 +348,55 @@ function formatTime(time) {
       time.length == 3 &&
       (time.indexOf("am") > -1 || time.indexOf("pm") > -1)
     ) {
+      console.log("here");
       return time[0] + ":" + "00" + time[1] + time[2];
     } else if (time.length == 3) {
+      console.log("here");
       return time[0] + ":" + time[1] + time[2] + "am";
+    } else if (time.length == 5) {
+      console.log("here");
+      return time[0] + ":" + time[1] + time[2] + time[3] + time[4];
     } else {
       timeHold = time[0] + time[1];
       if (parseInt(timeHold) < 13) {
         if (time.length == 1) {
+          console.log("here");
           return time + ":" + "00" + "am";
         } else if (time.length == 2) {
+          console.log("here");
           return time + ":" + "00" + "am";
         } else if (
           (time.indexOf("am") > -1 || time.indexOf("pm") > -1) &&
           time.length == 4
         ) {
+          console.log(timeHold + ":" + "00" + time[2] + time[3]);
+          console.log("here");
           return timeHold + ":" + "00" + time[2] + time[3];
         } else if (time.indexOf("am") > -1 || time.indexOf("pm") > -1) {
+          console.log(timeHold + ":" + time[2] + time[3] + time[4] + time[5]);
+          console.log("here");
           return timeHold + ":" + time[2] + time[3] + time[4] + time[5];
         } else {
+          console.log(timeHold + ":" + time[2] + time[3] + "am");
+          console.log("here");
           return timeHold + ":" + time[2] + time[3] + "am";
         }
       } else {
-        return parseInt(timeHold) - 12 + ":" + "00" + "pm";
+        if (time.length == 2) {
+          console.log("here");
+          return parseInt(timeHold) - 12 + ":" + "00" + "pm";
+        } else {
+          console.log("here");
+          return parseInt(timeHold) - 12 + ":" + time[2] + time[3] + "pm";
+        }
       }
     }
   }
 }
 
 // ******************************************** time and length
-
+// console.log(formatTime("16"));
+// console.log(timeandlength("1:30-3:00pm"));
 function timeandlength(time) {
   hold = time.split("-");
   time1 = formatTime(hold[0]);
@@ -338,6 +412,7 @@ function timeandlength(time) {
     hours1 = time1[0] + time1[1];
     minutes1 = time1[3] + time1[4];
   }
+  console.log("time1:" + hours1 + ":" + minutes1);
   if (time2.length == 6) {
     hours2 = time2[0];
     minutes2 = time2[2] + time2[3];
@@ -345,6 +420,7 @@ function timeandlength(time) {
     hours2 = time2[0] + time2[1];
     minutes2 = time2[3] + time2[4];
   }
+  console.log("time2:" + hours2 + ":" + minutes2);
 
   if (parseInt(hours1) > parseInt(hours2)) {
     timeLimitHours = parseInt(hours1) - parseInt(hours2) - 12;
@@ -352,6 +428,11 @@ function timeandlength(time) {
   } else {
     timeLimitHours = parseInt(hours2) - parseInt(hours1);
     timeLimitMinitus = parseInt(minutes2) - parseInt(minutes1);
+  }
+
+  if (timeLimitMinitus < 0) {
+    timeLimitHours--;
+    timeLimitMinitus += 60;
   }
 
   if (timeLimitHours == 0) {
@@ -369,7 +450,7 @@ function timeandlength(time) {
 
 // ******************************************** Date
 
-formatDate("12oct2021");
+// formatDate("23/2/2021");
 
 function formatDate(d_ate) {
   if (d_ate.toLowerCase() == "today") {
@@ -379,6 +460,7 @@ function formatDate(d_ate) {
     var yyyy = today.getFullYear();
 
     today = dd + "/" + mm + "/" + yyyy;
+    console.log(today);
     return today;
   } else if (d_ate.toLowerCase() == "tomorrow") {
     var today = new Date();
@@ -386,6 +468,7 @@ function formatDate(d_ate) {
     var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
     var yyyy = today.getFullYear();
     today = dd + "/" + mm + "/" + yyyy;
+    console.log(today);
     return today;
   } else if (d_ate.toLowerCase() == "day after tomorrow") {
     var today = new Date();
@@ -393,6 +476,7 @@ function formatDate(d_ate) {
     var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
     var yyyy = today.getFullYear();
     today = dd + "/" + mm + "/" + yyyy;
+    console.log(today);
     return today;
   } else if (
     d_ate.toLowerCase() == "monday" ||
@@ -404,6 +488,7 @@ function formatDate(d_ate) {
     var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
     var yyyy = today.getFullYear();
     today = dd + "/" + mm + "/" + yyyy;
+    console.log(today);
     return today;
   } else if (
     d_ate.toLowerCase() == "tuesday" ||
@@ -415,6 +500,7 @@ function formatDate(d_ate) {
     var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
     var yyyy = today.getFullYear();
     today = dd + "/" + mm + "/" + yyyy;
+    console.log(today);
     return today;
   } else if (
     d_ate.toLowerCase() == "wednesday" ||
@@ -426,6 +512,7 @@ function formatDate(d_ate) {
     var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
     var yyyy = today.getFullYear();
     today = dd + "/" + mm + "/" + yyyy;
+    console.log(today);
     return today;
   } else if (
     d_ate.toLowerCase() == "thursday" ||
@@ -437,6 +524,7 @@ function formatDate(d_ate) {
     var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
     var yyyy = today.getFullYear();
     today = dd + "/" + mm + "/" + yyyy;
+    console.log(today);
     return today;
   } else if (
     d_ate.toLowerCase() == "friday" ||
@@ -448,6 +536,7 @@ function formatDate(d_ate) {
     var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
     var yyyy = today.getFullYear();
     today = dd + "/" + mm + "/" + yyyy;
+    console.log(today);
     return today;
   } else if (
     d_ate.toLowerCase() == "saturday" ||
@@ -459,6 +548,7 @@ function formatDate(d_ate) {
     var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
     var yyyy = today.getFullYear();
     today = dd + "/" + mm + "/" + yyyy;
+    console.log(today);
     return today;
   } else if (
     d_ate.toLowerCase() == "sunday" ||
@@ -470,6 +560,7 @@ function formatDate(d_ate) {
     var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
     var yyyy = today.getFullYear();
     today = dd + "/" + mm + "/" + yyyy;
+    console.log(today);
     return today;
   } else if (d_ate.toLowerCase() == "next monday") {
     var today = new Date();
@@ -478,6 +569,7 @@ function formatDate(d_ate) {
     var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
     var yyyy = today.getFullYear();
     today = dd + "/" + mm + "/" + yyyy;
+    console.log(today);
     return today;
   } else if (d_ate.toLowerCase() == "next tuesday") {
     var today = new Date();
@@ -486,6 +578,7 @@ function formatDate(d_ate) {
     var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
     var yyyy = today.getFullYear();
     today = dd + "/" + mm + "/" + yyyy;
+    console.log(today);
     return today;
   } else if (d_ate.toLowerCase() == "next wednesday") {
     var today = new Date();
@@ -494,6 +587,7 @@ function formatDate(d_ate) {
     var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
     var yyyy = today.getFullYear();
     today = dd + "/" + mm + "/" + yyyy;
+    console.log(today);
     return today;
   } else if (d_ate.toLowerCase() == "next thursday") {
     var today = new Date();
@@ -502,6 +596,7 @@ function formatDate(d_ate) {
     var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
     var yyyy = today.getFullYear();
     today = dd + "/" + mm + "/" + yyyy;
+    console.log(today);
     return today;
   } else if (d_ate.toLowerCase() == "next friday") {
     var today = new Date();
@@ -510,6 +605,7 @@ function formatDate(d_ate) {
     var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
     var yyyy = today.getFullYear();
     today = dd + "/" + mm + "/" + yyyy;
+    console.log(today);
     return today;
   } else if (d_ate.toLowerCase() == "next saturday") {
     var today = new Date();
@@ -518,6 +614,7 @@ function formatDate(d_ate) {
     var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
     var yyyy = today.getFullYear();
     today = dd + "/" + mm + "/" + yyyy;
+    console.log(today);
     return today;
   } else if (d_ate.toLowerCase() == "next sunday") {
     var today = new Date();
@@ -526,6 +623,7 @@ function formatDate(d_ate) {
     var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
     var yyyy = today.getFullYear();
     today = dd + "/" + mm + "/" + yyyy;
+    console.log(today);
     return today;
   } else if (d_ate.indexOf("/") > -1 && d_ate.split("/").length == 3) {
     newdate = "";
@@ -543,24 +641,38 @@ function formatDate(d_ate) {
       }
     }
     newdate = newdate + "/" + splitDate[yearindex];
+    console.log(newdate);
     return newdate;
   } else if (d_ate.indexOf("-") > -1 && d_ate.split("-").length == 3) {
+    var today = new Date();
+    var yyyy = today.getFullYear();
+    var regExp = /[a-zA-Z]/g;
     newdate = "";
     yearindex = 0;
     splitDate = d_ate.split("-");
-    for (i = 0; i < splitDate.length; i++) {
-      if (splitDate[i].length < 3) {
-        if (newdate == "") {
-          newdate = splitDate[i];
+
+    if (regExp.test(d_ate)) {
+      console.log(
+        splitDate[0] + "/" + getMonthNumber(splitDate[1]) + "/" + yyyy
+      );
+
+      return splitDate[0] + "/" + getMonthNumber(splitDate[1]) + "/" + yyyy;
+    } else {
+      for (i = 0; i < splitDate.length; i++) {
+        if (splitDate[i].length < 3) {
+          if (newdate == "") {
+            newdate = splitDate[i];
+          } else {
+            newdate = newdate + "/" + splitDate[i];
+          }
         } else {
-          newdate = newdate + "/" + splitDate[i];
+          yearindex = i;
         }
-      } else {
-        yearindex = i;
       }
+      newdate = newdate + "/" + splitDate[yearindex];
+      console.log(newdate);
+      return newdate;
     }
-    newdate = newdate + "/" + splitDate[yearindex];
-    return newdate;
   } else if (d_ate.indexOf("/") > -1 && d_ate.split("/").length == 2) {
     newdate = "";
     yearindex = 0;
@@ -577,24 +689,40 @@ function formatDate(d_ate) {
     var today = new Date();
     var yyyy = today.getFullYear();
     newdate = newdate + "/" + yyyy;
+    console.log(newdate);
     return newdate;
   } else if (d_ate.indexOf("-") > -1 && d_ate.split("-").length == 2) {
     newdate = "";
     yearindex = 0;
-    splitDate = d_ate.split("-");
-    for (i = 0; i < splitDate.length; i++) {
-      if (splitDate[i].length < 3) {
-        if (newdate == "") {
-          newdate = splitDate[i];
-        } else {
-          newdate = newdate + "/" + splitDate[i];
-        }
-      }
-    }
+    var regExp = /[a-zA-Z]/g;
     var today = new Date();
     var yyyy = today.getFullYear();
-    newdate = newdate + "/" + yyyy;
-    return newdate;
+    splitDate = d_ate.split("-");
+    if (regExp.test(d_ate)) {
+      if (regExp.test(splitDate[0])) {
+        newdate =
+          splitDate[1] + "/" + getMonthNumber(splitDate[0]) + "/" + yyyy;
+      } else {
+        newdate =
+          splitDate[0] + "/" + getMonthNumber(splitDate[1]) + "/" + yyyy;
+      }
+      console.log(newdate);
+      return newdate;
+    } else {
+      for (i = 0; i < splitDate.length; i++) {
+        if (splitDate[i].length < 3) {
+          if (newdate == "") {
+            newdate = splitDate[i];
+          } else {
+            newdate = newdate + "/" + splitDate[i];
+          }
+        }
+      }
+      console.log(newdate);
+      newdate = newdate + "/" + yyyy;
+      console.log(newdate);
+      return newdate;
+    }
   } else if (
     d_ate.indexOf("jan") ||
     d_ate.indexOf("feb") ||
@@ -619,13 +747,27 @@ function formatDate(d_ate) {
     if (dateNoSpace.length > 1) {
       finalDate = "";
       if (/\d/.test(dateNoSpace[0])) {
-        finalDate =
-          dateNoSpace[0] +
-          "/" +
-          getMonthNumber(dateNoSpace[1]) +
-          "/" +
-          dateNoSpace[2];
-        return finalDate;
+        var today = new Date();
+        var yyyy = today.getFullYear();
+        if (parseInt(dateNoSpace[0]) == parseInt(yyyy)) {
+          finalDate =
+            dateNoSpace[2] +
+            "/" +
+            getMonthNumber(dateNoSpace[1]) +
+            "/" +
+            dateNoSpace[0];
+          console.log(finalDate);
+          return finalDate;
+        } else {
+          finalDate =
+            dateNoSpace[0] +
+            "/" +
+            getMonthNumber(dateNoSpace[1]) +
+            "/" +
+            dateNoSpace[2];
+          console.log(finalDate);
+          return finalDate;
+        }
       } else {
         finalDate =
           dateNoSpace[1] +
@@ -633,6 +775,7 @@ function formatDate(d_ate) {
           getMonthNumber(dateNoSpace[0]) +
           "/" +
           dateNoSpace[2];
+        console.log(finalDate);
         return finalDate;
       }
     } else {
@@ -646,7 +789,19 @@ function formatDate(d_ate) {
           monthName = monthName + dateWithNoSpace[i];
         }
       }
+      console.log(numbers);
+      console.log(monthName);
       if (numbers.length == 5) {
+        console.log(
+          numbers[0] +
+            "/" +
+            getMonthNumber(monthName) +
+            "/" +
+            numbers[1] +
+            numbers[2] +
+            numbers[3] +
+            numbers[4]
+        );
         return (
           numbers[0] +
           "/" +
@@ -658,6 +813,17 @@ function formatDate(d_ate) {
           numbers[4]
         );
       } else if (numbers.length > 8) {
+        console.log(
+          numbers[0] +
+            numbers[1] +
+            "/" +
+            getMonthNumber(monthName) +
+            "/" +
+            numbers[2] +
+            numbers[3] +
+            numbers[4] +
+            numbers[5]
+        );
         return (
           numbers[0] +
           numbers[1] +
@@ -672,14 +838,101 @@ function formatDate(d_ate) {
       } else {
         var today = new Date();
         var yyyy = today.getFullYear();
+        if (numbers.length > 6) {
+          chkyear = numbers[0] + numbers[1] + numbers[2] + numbers[3];
+          console.log(chkyear);
+          if (parseInt(yyyy) == chkyear) {
+            if (numbers.length == 7) {
+              console.log(
+                numbers[6] + "/" + numbers[4] + numbers[5] + "/" + yyyy
+              );
+
+              return numbers[6] + "/" + numbers[4] + numbers[5] + "/" + yyyy;
+            } else {
+              console.log(
+                numbers[6] +
+                  numbers[7] +
+                  "/" +
+                  numbers[4] +
+                  numbers[5] +
+                  "/" +
+                  yyyy
+              );
+
+              return (
+                numbers[6] +
+                numbers[7] +
+                "/" +
+                numbers[4] +
+                numbers[5] +
+                "/" +
+                yyyy
+              );
+            }
+          } else {
+            if (numbers.length == 8) {
+              console.log(
+                numbers[0] +
+                  numbers[1] +
+                  "/" +
+                  numbers[2] +
+                  numbers[3] +
+                  "/" +
+                  yyyy
+              );
+
+              return (
+                numbers[0] +
+                numbers[1] +
+                "/" +
+                numbers[2] +
+                numbers[3] +
+                "/" +
+                yyyy
+              );
+            } else {
+              console.log(
+                numbers[0] + "/" + numbers[1] + numbers[2] + "/" + yyyy
+              );
+
+              return numbers[0] + "/" + numbers[1] + numbers[2] + "/" + yyyy;
+            }
+          }
+        }
+        console.log(
+          // numbers[0] + numbers[1] + "/" + numbers[2] + numbers[3] + "/" + yyyy
+          numbers[0] + numbers[1] + "/" + getMonthNumber(monthName) + "/" + yyyy
+        );
         return (
+          // numbers[0] + numbers[1] + "/" + numbers[2] + numbers[3] + "/" + yyyy
           numbers[0] + numbers[1] + "/" + getMonthNumber(monthName) + "/" + yyyy
         );
       }
     }
   } else {
+    console.log("Blank");
     return "none";
   }
+
+  // function getDayNumber(day) {
+  //   if (day.toLowerCase() == "monday" || day.toLowerCase() == "mon") {
+  //     return 1;
+  //   } else if (day.toLowerCase() == "tuesday" || day.toLowerCase() == "tue") {
+  //     return 2;
+  //   } else if (day.toLowerCase() == "wednesday" || day.toLowerCase() == "wed") {
+  //     return 3;
+  //   } else if (day.toLowerCase() == "thursday" || day.toLowerCase() == "thus") {
+  //     return 4;
+  //   } else if (day.toLowerCase() == "friday" || day.toLowerCase() == "fri") {
+  //     return 5;
+  //   } else if (day.toLowerCase() == "saturday" || day.toLowerCase() == "sat") {
+  //     return 6;
+  //   } else if (day.toLowerCase() == "sunday" || day.toLowerCase() == "sun") {
+  //     return 7;
+  //   } else {
+  //     return 0;
+  //   }
+  // }
 
   function getMonthNumber(month) {
     if (month.toLowerCase() == "january" || month.toLowerCase() == "jan") {
@@ -725,5 +978,87 @@ function formatDate(d_ate) {
     ) {
       return 12;
     }
+  }
+}
+
+chkExpire("23/11/2021");
+function chkExpire(expDate) {
+  chkExpire = expDate.split("/");
+  expDay = parseInt(chkExpire[0]);
+  expMonth = parseInt(chkExpire[1]);
+  expYear = parseInt(chkExpire[2]);
+
+  var today = new Date();
+  var dd = parseInt(String(today.getDate()).padStart(2, "0"));
+  var mm = parseInt(String(today.getMonth() + 1).padStart(2, "0")); //January is 0!
+  var yyyy = parseInt(today.getFullYear());
+}
+
+// console.log(setDate("29/2/2021"));
+function setDate(get_date) {
+  console.log(get_date);
+  monthDays = getDaysInMonths(get_date);
+  chkDate = get_date.split("/");
+  holdDay = parseInt(chkDate[0]);
+  holdMonth = parseInt(chkDate[1]);
+  holdYear = parseInt(chkDate[2]);
+  if (holdDay > monthDays) {
+    holdDay = holdDay - monthDays;
+    holdMonth += 1;
+  }
+
+  if (holdMonth > 12) {
+    holdYear += 1;
+  }
+
+  return holdDay + "/" + holdMonth + "/" + holdYear;
+}
+
+function getDaysInMonths(monthCheck) {
+  monthCheck = monthCheck.split("/");
+  if (monthCheck[1] == "1" || monthCheck[1] == "01") {
+    console.log("here");
+    return 31;
+  } else if (monthCheck[1] == "2" || monthCheck[1] == "02") {
+    if (monthCheck[2] % 2 == 0) {
+      console.log("here");
+      return 29;
+    } else {
+      console.log("here");
+      return 28;
+    }
+  } else if (monthCheck[1] == "3" || monthCheck[1] == "03") {
+    console.log("here");
+    return 31;
+  } else if (monthCheck[1] == "4" || monthCheck[1] == "04") {
+    console.log("here");
+    return 30;
+  } else if (monthCheck[1] == "5" || monthCheck[1] == "05") {
+    console.log("here");
+    return 31;
+  } else if (monthCheck[1] == "6" || monthCheck[1] == "06") {
+    console.log("here");
+    return 30;
+  } else if (monthCheck[1] == "7" || monthCheck[1] == "07") {
+    console.log("here");
+    return 31;
+  } else if (monthCheck[1] == "8" || monthCheck[1] == "08") {
+    console.log("here");
+    return 30;
+  } else if (monthCheck[1] == "9" || monthCheck[1] == "09") {
+    console.log("here");
+    return 31;
+  } else if (monthCheck[1] == "10") {
+    console.log("here");
+    return 30;
+  } else if (monthCheck[1] == "11") {
+    console.log("here");
+    return 30;
+  } else if (monthCheck[1] == "12") {
+    console.log("here");
+    return 31;
+  } else {
+    console.log("here");
+    return none;
   }
 }
