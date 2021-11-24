@@ -23,6 +23,7 @@
 
 .addContentInputDiv {
   margin-bottom: 20px;
+  z-index: 3;
 }
 
 .addContentInerInputDiv {
@@ -42,14 +43,13 @@
   outline: none;
 }
 
-.addContentInerInputDiv button {
+.buttonAdd {
   width: 113.76px;
   height: 25px;
   background: #e6e6e6;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 10px;
 }
-
 .createEventContent {
   padding-left: 250px;
   padding-right: 250px;
@@ -209,14 +209,45 @@
   position: absolute;
   right: 10px;
 }
-/**************************************** Hide div *********************************************/
+/********************************************* Dropdown */
 
-/* #eventDate,
-#eventStartTime,
-#eventLength,
-#eventParticipants,
-#eventLocation,
-#eventCalendar,
-#eventDescription {
+.dropbtn {
+  background-color: #f4f7fa;
+  color: black;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+.dropdown-content {
   display: none;
-} */
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  width: 100%;
+}
+
+.dropdown-content p {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  cursor: pointer;
+}
+
+.dropdown-content p:hover {
+  background-color: #f1f1f1;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}

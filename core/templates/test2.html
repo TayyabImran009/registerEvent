@@ -6,6 +6,7 @@
 {% block stylesheets %}
 
     <link rel='stylesheet' type='text/css' media='screen' href="/static/css/registerEvent.css">
+    <link rel='stylesheet' type='text/css' media='screen' href="/static/css/calander.css">
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
 
 
@@ -21,10 +22,48 @@
     <h1>Create new event</h1>
     <div class="createEventInerBlock">
 
-        <div class="addContentInputDiv">
+        <div class="addContentInputDiv" id="inputDiv">
             <div class="addContentInerInputDiv">
                 <input id="eventAddBar" type="text" placeholder="Type event title">
-                <button id="eventAddBtn">Add</button>
+                <button class="buttonAdd" id="eventAddBtn">Add</button>
+            </div>
+            <div class="container" id="calanderDiv">
+                <div class="calendar">
+                  <div class="month">
+                    <i class="fas fa-angle-left prev"></i>
+                    <div class="date">
+                      <h1></h1>
+                      <p></p>
+                    </div>
+                    <i class="fas fa-angle-right next"></i>
+                  </div>
+                  <div class="weekdays">
+                    <div>Sun</div>
+                    <div>Mon</div>
+                    <div>Tue</div>
+                    <div>Wed</div>
+                    <div>Thu</div>
+                    <div>Fri</div>
+                    <div>Sat</div>
+                  </div>
+                  <div class="days"></div>
+                </div>
+              </div>
+        </div>
+
+        <div class="addContentInputDiv" id="dropDownDiv">
+            <div class="addContentInerInputDiv">
+                <div class="dropdown">
+                    <button class="dropbtn">Calender To Add</button>
+                    <div class="dropdown-content" id="dropdown-content">
+                    <p id="dropdownOption">MainCalendar</p>
+                    <p id="dropdownOption">SubCalendar1</p>
+                    <p id="dropdownOption">SubCalendar2</p>
+                    <p id="dropdownOption">SubCalendar3</p>
+                    <p id="dropdownOption">SubCalendar4</p>
+                    <p id="dropdownOption">SubCalendar5</p>
+                    </div>
+                  </div>
             </div>
         </div>
 
@@ -147,6 +186,7 @@
     <script src="/static/js/popper.js" ></script>
     <script src="/static/js/bootstrap.js" ></script>
     <script src="/static/js/registerEvent.js"></script>
+    <script src="/static/js/calendar.js"></script>
 
 {% endblock javascripts %}
 
