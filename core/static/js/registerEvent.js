@@ -30,16 +30,65 @@ for (let i = 0; i < dropdownOption.length; i++) {
 
 calanderDiv.style.display = "none";
 eventAddBtn.addEventListener("click", function () {
-  performTask();
+  if(eventAddBar.placeholder == "email"){
+    addEmail()
+  }else{
+    performTask();
+  }
   eventAddBar.focus();
 });
 
 eventAddBar.addEventListener("keydown", function (event) {
   if (event.keyCode === 13) {
-    performTask();
+    if(eventAddBar.placeholder == "email"){
+      addEmail()
+    }else{
+      performTask();
+    }
     eventAddBar.focus();
   }
 });
+emailList = [];
+
+function addEmail(){
+  
+    const createEventContentDataEmailArea = document.querySelector(
+      ".createEventContentDataEmailArea"
+    );
+    if(eventAddBar.value != ""){
+      emailList.push(eventAddBar.value);
+      let output = "";
+      for(let i=0; i<emailList.length; i++){
+        console.log(emailList[i]);
+        output +=
+          "<div class='createEventContentDataEmail2' id='createEventContentData'><p id='fieldsData'>" +
+          emailList[i] +
+          "</p><i id='removeParticipent' class='fa fa-times' aria-hidden='true' onclick=removeEmail("+i+")></i></div>";
+      }
+      createEventContentDataEmailArea.style.display = "block";
+      createEventContentDataEmailArea.innerHTML = output;
+      createEventContentData[index].style.display = "block";
+      eventAddBar.value="";
+    }else{
+      console.log("Here");
+      if(emailList != []){
+        mailtemp = "";
+      for(let i=0; i<emailList.length; i++){
+        if(mailtemp != ""){
+          mailtemp = mailtemp+","+emailList[i];
+        }else{
+          mailtemp = emailList[i];
+        }
+      }
+      console.log(mailtemp);
+      fields[4].value = mailtemp;
+      eventAddBar.value = "";
+      index = getFieldNumber();
+      eventAddBar.placeholder = getNextValue(index);
+      }
+    }
+}
+
 
 function performTask() {
   if (
@@ -48,23 +97,7 @@ function performTask() {
     eventAddBar.placeholder != "Done"
   ) {
     let index = getFieldNumber();
-    if (index == 4) {
-      const createEventContentDataEmailArea = document.querySelector(
-        ".createEventContentDataEmailArea"
-      );
-      const emails = eventAddBar.value.split(",");
-      let output = "";
-      for (let i = 0; i < emails.length; i++) {
-        output +=
-          "<div class='createEventContentDataEmail2' id='createEventContentData'><p id='fieldsData'>" +
-          emails[i] +
-          "</p><i class='fa fa-times' aria-hidden='true'  onclick=removeEmail()></i></div>";
-      }
-      createEventContentDataEmailArea.style.display = "block";
-      createEventContentDataEmailArea.innerHTML = output;
-      createEventContentData[index].style.display = "block";
-      fields[index].value = eventAddBar.value;
-    } else {
+    
       if (index == 3) {
         fields[index].value = formatLength(eventAddBar.value);
         if (fields[index].value != "none") {
@@ -80,16 +113,15 @@ function performTask() {
         fieldsData[index].innerText = fields[index].value;
       } else if (index == 2) {
         if (eventAddBar.value.indexOf("-") > -1) {
-          fields[index].value = formatTime(eventAddBar.value.split("-")[0]);
+          timeAndLength = timeandlength(eventAddBar.value);
+          fields[index].value = formatTime(timeAndLength.split("-")[0]);
           createEventContentData[index].style.display = "block";
           fieldsData[index].innerText = fields[index].value;
 
-          fields[index + 1].value = putTimeInHM(
-            timeandlength(eventAddBar.value)
-          );
+          fields[index + 1].value = putTimeInHM(timeAndLength.split("-")[1]);
           createEventContentData[index + 1].style.display = "block";
           fieldsData[index + 1].innerText = putTimeInHM(
-            timeandlength(eventAddBar.value)
+            timeAndLength.split("-")[1]
           );
         } else {
           hold = formatTime(eventAddBar.value);
@@ -104,7 +136,6 @@ function performTask() {
         createEventContentData[index].style.display = "block";
         fieldsData[index].innerText = eventAddBar.value;
       }
-    }
     eventAddBar.value = "";
     index = getFieldNumber();
     eventAddBar.placeholder = getNextValue(index);
@@ -148,7 +179,7 @@ function getNextValue(index) {
     calanderDiv.style.display = "none";
     dropDownDiv.style.display = "none";
     inputDiv.style.display = "block";
-    return "Enter Emails saprated by coma";
+    return "email";
   } else if (index == 5) {
     eventAddBar.type = "text";
     calanderDiv.style.display = "none";
@@ -234,12 +265,12 @@ function getRemovedValue(index) {
 }
 // **************************************** // remove email field
 
-function removeEmail() {
-  const emailField = document.querySelector(".emailField");
-  eventAddBar.value = emailField.value;
-  emailField.value = "none";
-  document.querySelector(".createEventContentDataEmailArea").style.display =
-    "none";
+function removeEmail(id) {
+  const createEventContentDataEmail2 = document.querySelectorAll(".createEventContentDataEmail2");
+  createEventContentDataEmail2[id].style.display="none";
+  emailList.splice(id, 1);
+  console.log(emailList);
+  eventAddBar.focus();
 }
 
 // **************************************** // ajax call
@@ -287,13 +318,32 @@ submitData.addEventListener("click", function () {
   }
 });
 
+const savedData = document.getElementById("savedData");
+
 function saveEvent(mydata) {
   $.ajax({
     url: "/test/",
     method: "POST",
     data: mydata,
     success: function (data) {
-      console.log(data);
+      console.log(data.newData[0]);
+      x = data.newData[0];
+      savedData.innerHTML =
+        x.title +
+        " " +
+        x.date +
+        " " +
+        x.startTime +
+        " " +
+        x.length +
+        " " +
+        x.email +
+        " " +
+        x.location +
+        " " +
+        x.calender +
+        " " +
+        x.description;
     },
   });
 }
@@ -349,6 +399,8 @@ function putTimeInHM(time) {
 
 // *************************************** formating Time
 
+// console.log(formatTime("0900pm"));
+
 function formatTime(time) {
   if (time.length > 3 && time.indexOf(":") > -1) {
     tempTime = time;
@@ -368,9 +420,9 @@ function formatTime(time) {
           console.log("here");
           return time + tempTime[4] + tempTime[5];
         } else {
-          console.log(time + "pm");
+          console.log(time + "am");
           console.log("here");
-          return time + "pm";
+          return time + "am";
         }
       } else {
         timeHold = time[0] + time[1];
@@ -444,7 +496,7 @@ function formatTime(time) {
       if (parseInt(timeHold) < 13) {
         if (time.length == 1) {
           console.log("here");
-          return time + ":" + "00" + "pm";
+          return time + ":" + "00" + "am";
         } else if (time.length == 2) {
           console.log("here");
           return time + ":" + "00" + "am";
@@ -460,9 +512,9 @@ function formatTime(time) {
           console.log("here");
           return timeHold + ":" + time[2] + time[3] + time[4] + time[5];
         } else {
-          console.log(timeHold + ":" + time[2] + time[3] + "pm");
+          console.log(timeHold + ":" + time[2] + time[3] + "am");
           console.log("here");
-          return timeHold + ":" + time[2] + time[3] + "pm";
+          return timeHold + ":" + time[2] + time[3] + "am";
         }
       } else {
         if (time.length == 2) {
@@ -476,7 +528,7 @@ function formatTime(time) {
           console.log("here");
           if (parseInt(timeHold) > 12) {
             if (parseInt(timeHold) - 12 < 13) {
-              if (time.indexOf("am") - 1) {
+              if (time.indexOf("am") > -1) {
                 return "none";
               } else {
                 console.log(parseInt(timeHold) - 12 + ":" + "00" + "pm");
@@ -495,11 +547,66 @@ function formatTime(time) {
 }
 
 // ******************************************** time and length
-//
+
+// console.log(timeandlength("0900-2300"));
+
 function timeandlength(time) {
   hold = time.split("-");
-  time1 = formatTime(hold[0]);
-  time2 = formatTime(hold[1]);
+  formatTime1 = hold[0];
+  formatTime2 = hold[1];
+  time1 = formatTime(formatTime1);
+  time2 = formatTime(formatTime2);
+  console.log("Time: " + time1);
+  console.log("Time: " + time2);
+
+  console.log(formatTime1);
+  console.log(formatTime1.indexOf("m") > -1);
+  if (formatTime1.indexOf("m") > -1 || formatTime1.indexOf("M") > -1) {
+    console.log("1 has m");
+  } else {
+    console.log("no m");
+    if (formatTime2.indexOf("m") > -1 || formatTime2.indexOf("M") > -1) {
+      console.log("have m");
+      if (parseInt(time1.split(":")[0]) < parseInt(time2.split(":")[0])) {
+        if (formatTime2.indexOf("am") > -1) {
+          if (time1.length == 6) {
+            time1 = time1[0] + time1[1] + time1[2] + time1[3] + "am";
+            console.log("Here");
+          } else {
+            time1 = time1[0] + time1[1] + time1[2] + time1[3] + time1[4] + "am";
+            console.log("Here");
+          }
+        } else {
+          if (time1.length == 6) {
+            time1 = time1[0] + time1[1] + time1[2] + time1[3] + "pm";
+            console.log("Here");
+          } else {
+            time1 = time1[0] + time1[1] + time1[2] + time1[3] + time1[4] + "pm";
+            console.log("Here");
+          }
+        }
+      } else {
+        if (formatTime2.indexOf("am") > -1) {
+          if (time1.length == 6) {
+            time1 = time1[0] + time1[1] + time1[2] + time1[3] + "pm";
+            console.log("Here");
+          } else {
+            time1 = time1[0] + time1[1] + time1[2] + time1[3] + time1[4] + "pm";
+            console.log("Here");
+          }
+        } else {
+          if (time1.length == 6) {
+            time1 = time1[0] + time1[1] + time1[2] + time1[3] + "am";
+            console.log("Here");
+          } else {
+            time1 = time1[0] + time1[1] + time1[2] + time1[3] + time1[4] + "am";
+            console.log("Here");
+          }
+        }
+      }
+    }
+  }
+
   hours1 = "";
   minutes1 = "";
   timeState1 = "";
@@ -556,17 +663,18 @@ function timeandlength(time) {
     //   hrs = Math.abs(Math.abs(timeLimitHours) - 12) * 60;
     // }
     hrs = Math.abs(timeLimitHours) * 60;
-    console.log("Here");
   }
   mins = Math.abs(timeLimitMinitus);
-  return hrs + mins;
+  console.log(hrs);
+  console.log(mins);
+  totalMin = hrs + mins;
+  console.log(time1 + "-" + totalMin);
+  return time1 + "-" + totalMin;
 }
 
 // console.log(formatTime("1:30pm"));
 
 // ******************************************** Date
-
-// formatDate("23/2/2021");
 
 function formatDate(d_ate) {
   if (d_ate.toLowerCase() == "today") {
@@ -741,6 +849,11 @@ function formatDate(d_ate) {
     today = dd + "/" + mm + "/" + yyyy;
     console.log(today);
     return today;
+  } else if (d_ate.indexOf("月") > -1) {
+    hold_date = d_ate;
+    hold_date = hold_date.replace("月", "/");
+    hold_date = hold_date.replace("日", "");
+    return formatDate(hold_date);
   } else if (d_ate.indexOf("/") > -1 && d_ate.split("/").length == 3) {
     newdate = "";
     splitDate = d_ate.split("/");
@@ -796,7 +909,7 @@ function formatDate(d_ate) {
     var today = new Date();
     var yyyy = today.getFullYear();
     newdate = newdate + "/" + yyyy;
-    console.log(newdate + "Here");
+    console.log(newdate);
     return newdate;
   } else if (d_ate.indexOf("-") > -1 && d_ate.split("-").length == 2) {
     newdate = "";
@@ -826,17 +939,12 @@ function formatDate(d_ate) {
       console.log(newdate);
       return newdate;
     } else {
-      for (i = 0; i < splitDate.length; i++) {
-        if (splitDate[i].length < 3) {
-          if (newdate == "") {
-            newdate = splitDate[i];
-          } else {
-            newdate = newdate + "/" + splitDate[i];
-          }
-        }
-      }
-      console.log(newdate);
-      newdate = newdate + "/" + yyyy;
+      // if (parseInt(splitDate[0]) > 12) {
+      //   newdate = splitDate[0] + "/" + splitDate[1] + "/" + yyyy;
+      // } else {
+      //   newdate = splitDate[1] + "/" + splitDate[0] + "/" + yyyy;
+      // }
+      newdate = splitDate[0] + "/" + splitDate[1] + "/" + yyyy;
       console.log(newdate);
       return newdate;
     }
@@ -876,14 +984,34 @@ function formatDate(d_ate) {
           console.log(finalDate);
           return finalDate;
         } else {
-          finalDate =
-            dateNoSpace[0] +
-            "/" +
-            getMonthNumber(dateNoSpace[1]) +
-            "/" +
-            dateNoSpace[2];
-          console.log(finalDate);
-          return finalDate;
+          if (!/\d/.test(dateNoSpace[1])) {
+            finalDate =
+              dateNoSpace[0] +
+              "/" +
+              getMonthNumber(dateNoSpace[1]) +
+              "/" +
+              dateNoSpace[2];
+            console.log(finalDate);
+            return finalDate;
+          } else {
+            if (parseInt(dateNoSpace[0]) > 12) {
+              finalDate =
+                dateNoSpace[0] + "/" + dateNoSpace[1] + "/" + dateNoSpace[2];
+              console.log(finalDate);
+              return finalDate;
+            } else {
+              if (dateNoSpace.length == 2) {
+                finalDate = dateNoSpace[1] + "/" + dateNoSpace[0] + "/" + yyyy;
+                console.log(finalDate);
+                return finalDate;
+              } else {
+                finalDate =
+                  dateNoSpace[1] + "/" + dateNoSpace[0] + "/" + dateNoSpace[2];
+                console.log(finalDate);
+                return finalDate;
+              }
+            }
+          }
         }
       } else {
         if (dateNoSpace.length == 3) {

@@ -88,7 +88,10 @@ def test(request):
         events = RegisterEvents(
             title=request.POST['title'], date=request.POST['date'], startTime=request.POST['startTime'], length=request.POST['length'], email=request.POST['email'], location=request.POST['location'], calender=request.POST['calender'], description=request.POST['description'])
         events.save()
-        return JsonResponse({'status': 1})
+        print(events.id)
+        newData = RegisterEvents.objects.filter(id=events.id).values()
+        newData2 = list(newData)
+        return JsonResponse({'status': 1, 'newData': newData2})
     return render(request, 'test2.html', params)
 
 

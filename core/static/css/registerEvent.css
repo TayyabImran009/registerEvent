@@ -251,3 +251,27 @@
 .dropdown:hover .dropdown-content {
   display: block;
 }
+
+@media (max-width: 1306px) {
+  .createEventContent {
+    padding-left: 200px;
+    padding-right: 200px;
+    position: relative;
+  }
+}
+
+@media (max-width: 1206px) {
+  .createEventContent {
+    padding-left: 150px;
+    padding-right: 150px;
+    position: relative;
+  }
+}
+
+@media (max-width: 1106px) {
+  .createEventContent {
+    padding-left: 100px;
+    padding-right: 100px;
+    position: relative;
+  }
+}
