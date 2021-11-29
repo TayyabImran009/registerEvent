@@ -67,7 +67,7 @@ function addEmail(){
       }
       createEventContentDataEmailArea.style.display = "block";
       createEventContentDataEmailArea.innerHTML = output;
-      createEventContentData[index].style.display = "block";
+      createEventContentData[4].style.display = "block";
       eventAddBar.value="";
     }else{
       console.log("Here");
@@ -99,10 +99,13 @@ function performTask() {
     let index = getFieldNumber();
     
       if (index == 3) {
-        fields[index].value = formatLength(eventAddBar.value);
-        if (fields[index].value != "none") {
-          createEventContentData[index].style.display = "block";
-          fieldsData[index].innerText = fields[index].value;
+        holdLength = formatLength(eventAddBar.value);
+        if(holdLength!="none"){
+          fields[index].value = formatLength(eventAddBar.value);
+          if (fields[index].value != "none") {
+            createEventContentData[index].style.display = "block";
+            fieldsData[index].innerText = fields[index].value;
+          }
         }
       } else if (index == 1) {
         returnDate = formatDate(eventAddBar.value);
@@ -271,6 +274,22 @@ function removeEmail(id) {
   emailList.splice(id, 1);
   console.log(emailList);
   eventAddBar.focus();
+
+  
+  mailtemp = "";
+  for(let i=0; i<emailList.length; i++){
+    if(mailtemp != ""){
+      mailtemp = mailtemp+","+emailList[i];
+    }else{
+      mailtemp = emailList[i];
+    }
+  }
+  console.log(mailtemp);
+  fields[4].value = mailtemp;
+  if (emailList == []){
+    fields[4].value = "none";
+  }
+  
 }
 
 // **************************************** // ajax call
@@ -350,26 +369,31 @@ function saveEvent(mydata) {
 
 // *************************************** formating Length
 function formatLength(length) {
-  nospace = length.replace(/ +/g, "");
-  index = 0;
-  onlyNum = "";
-  console.log(nospace[index]);
-  for (let i = 0; nospace[i] != "h" && nospace[i] != "m"; i++) {
-    onlyNum += nospace[i];
+  if(length.indexOf("m") > -1 || length.indexOf("M") > -1 || length.indexOf("H") > -1 || length.indexOf("h") > -1)
+  {
+    nospace = length.replace(/ +/g, "");
+    index = 0;
+    onlyNum = "";
+    console.log(nospace[index]);
+    for (let i = 0; nospace[i] != "h" && nospace[i] != "m"; i++) {
+      onlyNum += nospace[i];
+      console.log(onlyNum);
+    }
     console.log(onlyNum);
-  }
-  console.log(onlyNum);
-  if (nospace.indexOf("m") > -1 || nospace.indexOf("M") > -1) {
-    console.log(onlyNum);
-    putTimeInHM(onlyNum);
-    return putTimeInHM(onlyNum);
-  }
-  if (nospace.indexOf("h") > -1 || nospace.indexOf("H") > -1) {
-    console.log(parseFloat(onlyNum) * 60);
-    putTimeInHM(parseFloat(onlyNum) * 60);
-    return putTimeInHM(parseFloat(onlyNum) * 60);
-  } else {
-    console.log("none");
+    if (nospace.indexOf("m") > -1 || nospace.indexOf("M") > -1) {
+      console.log(onlyNum);
+      putTimeInHM(onlyNum);
+      return putTimeInHM(onlyNum);
+    }
+    if (nospace.indexOf("h") > -1 || nospace.indexOf("H") > -1) {
+      console.log(parseFloat(onlyNum) * 60);
+      putTimeInHM(parseFloat(onlyNum) * 60);
+      return putTimeInHM(parseFloat(onlyNum) * 60);
+    } else {
+      console.log("none");
+      return "none";
+    }
+  }else{
     return "none";
   }
 }
@@ -487,7 +511,7 @@ function formatTime(time) {
       return time[0] + ":" + "00" + time[1] + time[2];
     } else if (time.length == 3) {
       console.log("here");
-      return time[0] + ":" + time[1] + time[2] + "pm";
+      return time[0] + ":" + time[1] + time[2] + "am";
     } else if (time.length == 5) {
       console.log("here");
       return time[0] + ":" + time[1] + time[2] + time[3] + time[4];
@@ -531,8 +555,8 @@ function formatTime(time) {
               if (time.indexOf("am") > -1) {
                 return "none";
               } else {
-                console.log(parseInt(timeHold) - 12 + ":" + "00" + "pm");
-                return parseInt(timeHold) - 12 + ":" + "00" + "pm";
+                console.log(parseInt(timeHold) - 12 + ":" + time[2] + time[3] + "pm");
+                return parseInt(timeHold) - 12 + ":" + time[2] + time[3] + "pm";
               }
             } else {
               return "none";
@@ -548,7 +572,7 @@ function formatTime(time) {
 
 // ******************************************** time and length
 
-// console.log(timeandlength("0900-2300"));
+// console.log(timeandlength("1301-1502"));
 
 function timeandlength(time) {
   hold = time.split("-");
@@ -676,6 +700,7 @@ function timeandlength(time) {
 
 // ******************************************** Date
 
+console.log(formatDate("11-15"));
 function formatDate(d_ate) {
   if (d_ate.toLowerCase() == "today") {
     var today = new Date();
@@ -939,13 +964,13 @@ function formatDate(d_ate) {
       console.log(newdate);
       return newdate;
     } else {
-      // if (parseInt(splitDate[0]) > 12) {
-      //   newdate = splitDate[0] + "/" + splitDate[1] + "/" + yyyy;
-      // } else {
-      //   newdate = splitDate[1] + "/" + splitDate[0] + "/" + yyyy;
-      // }
-      newdate = splitDate[0] + "/" + splitDate[1] + "/" + yyyy;
-      console.log(newdate);
+      if(parseInt(splitDate[0]) > 12){
+        newdate = splitDate[0] + "/" + splitDate[1] + "/" + yyyy;
+        console.log(newdate);
+      }else{
+        newdate = splitDate[1] + "/" + splitDate[0] + "/" + yyyy;
+        console.log(newdate);
+      }
       return newdate;
     }
   } else if (
@@ -1225,14 +1250,38 @@ function formatDate(d_ate) {
             }
           }
         }
-        console.log(
-          // numbers[0] + numbers[1] + "/" + numbers[2] + numbers[3] + "/" + yyyy
-          numbers[0] + numbers[1] + "/" + getMonthNumber(monthName) + "/" + yyyy
-        );
-        return (
-          // numbers[0] + numbers[1] + "/" + numbers[2] + numbers[3] + "/" + yyyy
-          numbers[0] + numbers[1] + "/" + getMonthNumber(monthName) + "/" + yyyy
-        );
+        if(monthName != ""){
+          console.log(
+            // numbers[0] + numbers[1] + "/" + numbers[2] + numbers[3] + "/" + yyyy
+            numbers[0] + numbers[1] + "/" + getMonthNumber(monthName) + "/" + yyyy
+          );
+          return (
+            // numbers[0] + numbers[1] + "/" + numbers[2] + numbers[3] + "/" + yyyy
+            numbers[0] + numbers[1] + "/" + getMonthNumber(monthName) + "/" + yyyy
+          );
+        }else{
+          if(parseInt(numbers[0] + numbers[1]) > 12){
+            console.log(
+              // numbers[0] + numbers[1] + "/" + numbers[2] + numbers[3] + "/" + yyyy
+              numbers[0] + numbers[1] + "/" + numbers[2] + numbers[3] + "/" + yyyy
+            );
+            return (
+              // numbers[0] + numbers[1] + "/" + numbers[2] + numbers[3] + "/" + yyyy
+              numbers[0] + numbers[1] + "/" + numbers[2] + numbers[3] + "/" + yyyy
+            );
+          }else{
+            console.log(
+              // numbers[0] + numbers[1] + "/" + numbers[2] + numbers[3] + "/" + yyyy
+              numbers[2] + numbers[3] + "/" + numbers[0] + numbers[1] + "/" + yyyy
+            );
+            return (
+              // numbers[0] + numbers[1] + "/" + numbers[2] + numbers[3] + "/" + yyyy
+              numbers[2] + numbers[3] + "/" + numbers[0] + numbers[1] + "/" + yyyy
+            );
+          }
+          
+        }
+        
       }
     }
   } else {
