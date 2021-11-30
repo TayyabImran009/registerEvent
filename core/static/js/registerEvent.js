@@ -572,59 +572,79 @@ function formatTime(time) {
 
 // ******************************************** time and length
 
-// console.log(timeandlength("1301-1502"));
+console.log(timeandlength("2216-2620"));
 
 function timeandlength(time) {
   hold = time.split("-");
   formatTime1 = hold[0];
   formatTime2 = hold[1];
-  time1 = formatTime(formatTime1);
-  time2 = formatTime(formatTime2);
-  console.log("Time: " + time1);
-  console.log("Time: " + time2);
 
-  console.log(formatTime1);
-  console.log(formatTime1.indexOf("m") > -1);
-  if (formatTime1.indexOf("m") > -1 || formatTime1.indexOf("M") > -1) {
-    console.log("1 has m");
-  } else {
-    console.log("no m");
-    if (formatTime2.indexOf("m") > -1 || formatTime2.indexOf("M") > -1) {
-      console.log("have m");
-      if (parseInt(time1.split(":")[0]) < parseInt(time2.split(":")[0])) {
-        if (formatTime2.indexOf("am") > -1) {
-          if (time1.length == 6) {
-            time1 = time1[0] + time1[1] + time1[2] + time1[3] + "am";
-            console.log("Here");
+  chk24h = formatTime2[0]+formatTime2[1];
+
+  if(parseInt(chk24h) > 24){
+    time1 = formatTime(formatTime1);
+    if(formatTime2.length == 5){
+      time2 = formatTime2;
+      console.log("here is T2: "+time2);
+    } else if(formatTime2.length == 4){
+      time2 = formatTime2[0]+formatTime2[1]+":"+formatTime2[2]+formatTime2[3]+"pm";
+      console.log("here is T2: "+time2);
+    } else if(formatTime2.length == 2){
+      time2 = formatTime2[0]+formatTime2[1]+":"+"00pm";
+      console.log("here is T2: "+time2);
+    }else{
+      time2 = formatTime2[0]+":"+"00"+"pm";
+      console.log("here is T2: "+time2);
+    }
+  }else{
+    time1 = formatTime(formatTime1);
+    time2 = formatTime(formatTime2);
+    console.log("Time: " + time1);
+    console.log("Time: " + time2);
+
+    console.log(formatTime1);
+    console.log(formatTime1.indexOf("m") > -1);
+    if (formatTime1.indexOf("m") > -1 || formatTime1.indexOf("M") > -1) {
+      console.log("1 has m");
+    } else {
+      console.log("no m");
+      if (formatTime2.indexOf("m") > -1 || formatTime2.indexOf("M") > -1) {
+        console.log("have m");
+        if (parseInt(time1.split(":")[0]) < parseInt(time2.split(":")[0])) {
+          if (formatTime2.indexOf("am") > -1) {
+            if (time1.length == 6) {
+              time1 = time1[0] + time1[1] + time1[2] + time1[3] + "am";
+              console.log("Here");
+            } else {
+              time1 = time1[0] + time1[1] + time1[2] + time1[3] + time1[4] + "am";
+              console.log("Here");
+            }
           } else {
-            time1 = time1[0] + time1[1] + time1[2] + time1[3] + time1[4] + "am";
-            console.log("Here");
+            if (time1.length == 6) {
+              time1 = time1[0] + time1[1] + time1[2] + time1[3] + "pm";
+              console.log("Here");
+            } else {
+              time1 = time1[0] + time1[1] + time1[2] + time1[3] + time1[4] + "pm";
+              console.log("Here");
+            }
           }
         } else {
-          if (time1.length == 6) {
-            time1 = time1[0] + time1[1] + time1[2] + time1[3] + "pm";
-            console.log("Here");
+          if (formatTime2.indexOf("am") > -1) {
+            if (time1.length == 6) {
+              time1 = time1[0] + time1[1] + time1[2] + time1[3] + "pm";
+              console.log("Here");
+            } else {
+              time1 = time1[0] + time1[1] + time1[2] + time1[3] + time1[4] + "pm";
+              console.log("Here");
+            }
           } else {
-            time1 = time1[0] + time1[1] + time1[2] + time1[3] + time1[4] + "pm";
-            console.log("Here");
-          }
-        }
-      } else {
-        if (formatTime2.indexOf("am") > -1) {
-          if (time1.length == 6) {
-            time1 = time1[0] + time1[1] + time1[2] + time1[3] + "pm";
-            console.log("Here");
-          } else {
-            time1 = time1[0] + time1[1] + time1[2] + time1[3] + time1[4] + "pm";
-            console.log("Here");
-          }
-        } else {
-          if (time1.length == 6) {
-            time1 = time1[0] + time1[1] + time1[2] + time1[3] + "am";
-            console.log("Here");
-          } else {
-            time1 = time1[0] + time1[1] + time1[2] + time1[3] + time1[4] + "am";
-            console.log("Here");
+            if (time1.length == 6) {
+              time1 = time1[0] + time1[1] + time1[2] + time1[3] + "am";
+              console.log("Here");
+            } else {
+              time1 = time1[0] + time1[1] + time1[2] + time1[3] + time1[4] + "am";
+              console.log("Here");
+            }
           }
         }
       }
@@ -669,6 +689,9 @@ function timeandlength(time) {
     if (timeState1 != timeState2) {
       timeLimitHours += 12;
     }
+    if(parseInt(chk24h)>24){
+      timeLimitHours = timeLimitHours - 12;
+    }
     console.log(timeLimitHours);
     console.log(timeLimitMinitus);
   }
@@ -700,7 +723,7 @@ function timeandlength(time) {
 
 // ******************************************** Date
 
-console.log(formatDate("11-15"));
+// console.log(formatDate("2022 Sep 25"));
 function formatDate(d_ate) {
   if (d_ate.toLowerCase() == "today") {
     var today = new Date();
@@ -1010,20 +1033,46 @@ function formatDate(d_ate) {
           return finalDate;
         } else {
           if (!/\d/.test(dateNoSpace[1])) {
-            finalDate =
+            if(parseInt(dateNoSpace[0]) > 2020){
+              finalDate =
+              dateNoSpace[2] +
+              "/" +
+              getMonthNumber(dateNoSpace[1]) +
+              "/" +
+              dateNoSpace[0];
+              console.log(finalDate);
+              return finalDate;
+            }else{
+              finalDate =
               dateNoSpace[0] +
               "/" +
               getMonthNumber(dateNoSpace[1]) +
               "/" +
               dateNoSpace[2];
-            console.log(finalDate);
-            return finalDate;
-          } else {
-            if (parseInt(dateNoSpace[0]) > 12) {
-              finalDate =
-                dateNoSpace[0] + "/" + dateNoSpace[1] + "/" + dateNoSpace[2];
               console.log(finalDate);
               return finalDate;
+            }
+          } else {
+            if (parseInt(dateNoSpace[0]) > 12) {
+              console.log(dateNoSpace);
+              if(dateNoSpace.length == 3){
+                finalDate =
+                dateNoSpace[0] + "/" + dateNoSpace[1] + "/" + dateNoSpace[2];
+                console.log(finalDate);
+                return finalDate;
+              }else{
+                dateMonth = "";
+                holdYYYY = "";
+                for(let i=0; i<dateNoSpace[1].length; i++){
+                  if(!/\d/.test(dateNoSpace[1][i])){
+                    dateMonth += dateNoSpace[1][i];
+                  }else{
+                    holdYYYY += dateNoSpace[1][i];
+                  }
+                }
+                console.log(dateNoSpace[0] + "/" + getMonthNumber(dateMonth) + "/" + holdYYYY);
+                return dateNoSpace[0] + "/" + getMonthNumber(dateMonth) + "/" + holdYYYY;
+              }
             } else {
               if (dateNoSpace.length == 2) {
                 finalDate = dateNoSpace[1] + "/" + dateNoSpace[0] + "/" + yyyy;
@@ -1051,9 +1100,24 @@ function formatDate(d_ate) {
         } else {
           var today = new Date();
           var yyyy = today.getFullYear();
-          finalDate =
+          console.log(dateNoSpace)
+          console.log(parseInt(dateNoSpace[1]) +2)
+          if(parseInt(dateNoSpace[1]) > 2020){
+            if(parseInt(dateNoSpace[1].length) == 5){
+              finalDate =
+              dateNoSpace[1][0] + "/" + getMonthNumber(dateNoSpace[0]) + "/" + dateNoSpace[1][1]+dateNoSpace[1][2]+dateNoSpace[1][3]+dateNoSpace[1][4];
+              console.log(finalDate);
+            }else{
+              finalDate =
+              dateNoSpace[1][0]+dateNoSpace[1][1] + "/" + getMonthNumber(dateNoSpace[0]) + "/" + dateNoSpace[1][2]+dateNoSpace[1][3]+dateNoSpace[1][4]+dateNoSpace[1][5];
+              console.log(finalDate);
+            }
+
+          }else{
+            finalDate =
             dateNoSpace[1] + "/" + getMonthNumber(dateNoSpace[0]) + "/" + yyyy;
           console.log(finalDate);
+          }
           return finalDate;
         }
       }
@@ -1395,8 +1459,10 @@ function setDate(get_date) {
   }
 
   if ((holdDay < parseInt(dd) || holdMonth < mm) && holdYear == yyyy) {
-    holdYear += 1;
-    console.log("g");
+    if(holdMonth < mm){
+      holdYear += 1;
+      console.log("g");
+    }
   }
 
   return holdDay + "/" + holdMonth + "/" + holdYear;
