@@ -1458,9 +1458,9 @@ function setDate(get_date) {
     console.log("g");
   }
 
-  if ((holdDay < parseInt(dd) || holdMonth < mm) && holdYear == yyyy) {
+  if ((holdDay < parseInt(dd) || holdMonth < mm) && holdYear <= yyyy) {
     if(holdMonth < mm){
-      holdYear += 1;
+      holdYear = yyyy + 1;
       console.log("g");
     }
   }
