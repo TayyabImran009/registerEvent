@@ -1465,7 +1465,7 @@ function setDate(get_date) {
     }
   }
 
-  return  holdYear+ "/" + holdMonth + "/" + holdDay;
+  return  holdYear+ "-" + holdMonth + "-" + holdDay;
 }
 
 function getDaysInMonths(monthCheck) {
