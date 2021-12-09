@@ -15,6 +15,8 @@ const inputDiv = document.getElementById("inputDiv");
 
 dropDownDiv.style.display = "none";
 
+let chka = chkb = chkc = chkd = chke = false
+
 for (let i = 0; i < dropdownOption.length; i++) {
   dropdownOption[i].addEventListener("click", function () {
     console.log(dropdownOption[i].innerHTML);
@@ -32,6 +34,10 @@ calanderDiv.style.display = "none";
 eventAddBtn.addEventListener("click", function () {
   if(eventAddBar.placeholder == "email"){
     addEmail()
+  }else if(eventAddBar.placeholder == "Enter Location"){
+    addLocDes()
+  }else if(eventAddBar.placeholder == "Enter Description"){
+    addLocDes()
   }else{
     performTask();
   }
@@ -42,12 +48,41 @@ eventAddBar.addEventListener("keydown", function (event) {
   if (event.keyCode === 13) {
     if(eventAddBar.placeholder == "email"){
       addEmail()
+    }else if(eventAddBar.placeholder == "Enter Location"){
+      addLocDes()
+    }else if(eventAddBar.placeholder == "Enter Description"){
+      addLocDes()
     }else{
       performTask();
     }
     eventAddBar.focus();
   }
 });
+
+// $(eventAddBar).keydown(function(e){
+//   // Enter was pressed + shift key
+//   if (e.keyCode == 13 && e.shiftKey)
+//   {
+//       // prevent default behavior
+//       console.log("HEllo")
+//   }
+// }); 
+
+function addLocDes(){
+  if(eventAddBar.value == ""){
+    fields[index].value = "";
+    index = getFieldNumber();
+    eventAddBar.placeholder = getNextValue(index);
+  }else{
+    fields[index].value = eventAddBar.value;
+    createEventContentData[index].style.display = "block";
+    fieldsData[index].innerText = eventAddBar.value;  
+    eventAddBar.value = "";
+    index = getFieldNumber();
+    eventAddBar.placeholder = getNextValue(index);
+  }
+}
+
 emailList = [];
 
 function addEmail(){
@@ -148,6 +183,9 @@ function performTask() {
 function getFieldNumber() {
   for (let i = 0; i < fields.length; i++) {
     if (fields[i].value == "none") {
+      if (i == 7){
+        chka = chkb = chkc = chkd = chke = true;
+      }
       return i;
     }
   }
@@ -206,6 +244,31 @@ function getNextValue(index) {
     calanderDiv.style.display = "none";
     dropDownDiv.style.display = "none";
     inputDiv.style.display = "block";
+    chkOp = chkOptions();
+    return chkOp;
+  }
+}
+
+let a = false;
+let b = false;
+let c = false;
+
+function chkOptions(){
+  if (fields[4].value == "" && a == false){
+    index = 4;
+    a = true;
+    return "email";
+  }
+  else if(fields[5].value == "" && b == false){
+    index = 5;
+    b = true;
+    return "Enter Location"
+  }else if(fields[7].value == "" && c == false){
+    index = 7;
+    a = false;
+    b = false;
+    return "Enter Description"
+  }else{
     return "Done";
   }
 }
@@ -228,21 +291,25 @@ function getRemovedValue(index) {
     calanderDiv.style.display = "none";
     dropDownDiv.style.display = "none";
     inputDiv.style.display = "block";
+    chka = false;
     return "Type event title";
   } else if (index == 1) {
     calanderDiv.style.display = "block";
     dropDownDiv.style.display = "none";
     inputDiv.style.display = "block";
+    chkb = false;
     return "Enter Date";
   } else if (index == 2) {
     calanderDiv.style.display = "none";
     dropDownDiv.style.display = "none";
     inputDiv.style.display = "block";
+    chkc = false;
     return "Enter Start Time";
   } else if (index == 3) {
     calanderDiv.style.display = "none";
     dropDownDiv.style.display = "none";
     inputDiv.style.display = "block";
+    chkd = false;
     return "Enter Length";
   } else if (index == 4) {
     calanderDiv.style.display = "none";
@@ -253,6 +320,7 @@ function getRemovedValue(index) {
     calanderDiv.style.display = "none";
     dropDownDiv.style.display = "block";
     inputDiv.style.display = "none";
+    chkd = false;
     return "Enter Calander to add";
   } else if (index == 6) {
     calanderDiv.style.display = "none";
@@ -297,7 +365,12 @@ function removeEmail(id) {
 const submitData = document.getElementById("submitData");
 
 submitData.addEventListener("click", function () {
-  if (eventAddBar.placeholder == "Done") {
+  sub()
+});
+
+function sub(){
+  if (chka == true && chkb == true && chkc == true && chkd == true && chke == true) {
+    console.log("True");
     const titleField = document.querySelector(".titleField");
     const dateField = document.querySelector(".dateField");
     const startTimeField = document.querySelector(".startTimeField");
@@ -335,7 +408,7 @@ submitData.addEventListener("click", function () {
 
     window.scrollTo(0, 0);
   }
-});
+}
 
 const savedData = document.getElementById("savedData");
 
